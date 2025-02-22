@@ -6,7 +6,7 @@ from google.cloud import storage
 
 """
 Pre-reqs: 
-1. `pip install pandas pyarrow google-cloud-storage`
+1. `pip install pandas google-cloud-storage`
 2. Set GOOGLE_APPLICATION_CREDENTIALS to your project/service-account key
 3. Set GCP_GCS_BUCKET as your bucket or change default value of BUCKET
 """
@@ -14,7 +14,7 @@ Pre-reqs:
 # services = ['fhv','green','yellow']
 init_url = 'https://github.com/DataTalksClub/nyc-tlc-data/releases/download/'
 # switch out the bucketname
-BUCKET = os.environ.get("GCP_GCS_BUCKET", "dtc-data-lake-bucketname")
+BUCKET = os.environ.get("GCP_GCS_BUCKET", "zoomcamp_ag_bucket_2025")
 
 
 def upload_to_gcs(bucket, object_name, local_file):
@@ -25,12 +25,11 @@ def upload_to_gcs(bucket, object_name, local_file):
     bucket = client.bucket(bucket)
     blob = bucket.blob(object_name)
 
-    # Check if the blob (file) already exists
+    # Skip the upload if the file already exists
     if blob.exists():
         print(f"File {object_name} already exists. Skipping upload.")
-        return  # Skip the upload if the file already exists
+        return  
 
-    # If it doesn't exist, upload the file
     blob.upload_from_filename(local_file)
     print(f"File {object_name} uploaded to {bucket.name}.")
 
@@ -51,20 +50,17 @@ def web_to_gcs(year, service):
         open(file_name, 'wb').write(r.content)
         print(f"Local: {file_name}")
 
-        # read it back into a parquet file
-        df = pd.read_csv(file_name, compression='gzip')
-        file_name = file_name.replace('.csv.gz', '.parquet')
-        df.to_parquet(file_name, engine='pyarrow')
-        print(f"Parquet: {file_name}")
-
-        # upload it to gcs 
+        # upload it to gcs directly without converting to parquet
         upload_to_gcs(BUCKET, f"{service}/{file_name}", file_name)
         print(f"GCS: {service}/{file_name}")
 
+        # Clean up the local file
+        os.remove(file_name)
+        print(f"Removed local file: {file_name}")
+
 
 # web_to_gcs('2019', 'green')
-# web_to_gcs('2020', 'green')
+#web_to_gcs('2020', 'green')
 # web_to_gcs('2019', 'yellow')
 # web_to_gcs('2020', 'yellow')
-# web_to_gcs('2019', 'fhv')   # Add this line
-# web_to_gcs('2020', 'fhv')   # Add this line
+web_to_gcs('2019', 'fhv')
