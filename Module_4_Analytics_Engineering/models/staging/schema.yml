@@ -1,0 +1,11 @@
+version: 2
+
+sources:
+  - name: staging
+    # big query
+    database: zoomcamp-ag-2025 # this is actually the dataset in bigquery
+    schema: zoomcamp_dataset
+
+    tables:
+      - name: green_tripdata
+      - name: yellow_tripdata
