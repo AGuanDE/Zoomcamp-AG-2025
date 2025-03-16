@@ -1,4 +1,8 @@
-apache-flink==1.16.0
-psycopg2-binary==2.9.1
-requests
-kafka-python
+apache-flink==1.15.0
+apache-flink-libraries==1.15.0
+prometheus-client==0.16.0
+psycopg2-binary==2.9.6
+kafka-python==2.0.2
+python-dotenv==1.0.0
+pytest==7.3.1
+pytest-mock==3.10.0
