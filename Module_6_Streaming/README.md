@@ -16,7 +16,7 @@ Go version:  go1.23.1
 Redpanda Cluster
   node-1  v24.2.18 - f9a22d443087b824803638623d6b7492ec8221f9
 
-**### **Alternative method - run in shell, then find version (same result)**
+**Alternative method - run in shell, then find version (same result)**
 ```bash
 docker exec -it redpanda-1 /bin/sh
 rpk version
@@ -26,15 +26,17 @@ rpk version
 ## Question 2. Creating a topic - What's the output of the command for creating a topic? Include the entire output in your answer.
 
 **Command**
+```bash
 docker exec -it redpanda-1 rpk topic create green-trips
+```
 
-**Output:**
+**Answer / Output:**
+```bash
 TOPIC        STATUS
 green-trips  OK
-
+```
 
 ## Question 3. Connecting to the Kafka server - what's the output?
-of the last command?
 
 ```python
 import json
@@ -72,4 +74,5 @@ producer.bootstrap_connected()
 **Answer**
 
 Pick up loc - 22 (Brooklyn, Bensonhurst West); drop off loc - 22 --> 6 trips
+
 Pick up loc - 129 (Queens, Jackson Heights) drop off loc - 129 --> 6 trips
